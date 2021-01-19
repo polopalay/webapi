@@ -17,9 +17,9 @@ type StudentController struct {
 }
 
 func (sc *StudentController) get(w http.ResponseWriter, r *http.Request) {
-	rawid, _ := strconv.Atoi(strings.Join(r.URL.Query()["id"], ""))
+	id, _ := strconv.Atoi(strings.Join(r.URL.Query()["id"], ""))
 	var d = dao.DAO{Name: sc.DbName}
-	student := d.Get(rawid)
+	student := d.Get(id)
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte(fmt.Sprintf("{name: %s,age:%d}", student.Name, student.Age)))

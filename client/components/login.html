@@ -5,17 +5,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
+    <link rel="stylesheet" href="../css/login.css">
 </head>
 
 <body>
     <div class="text-center">
-        <form class="form-signin">
+        <form class="form-signin" action="/post">
             <img class="mb-4" src="./images/puzzle.png" alt="" width="72" height="72">
-            <h4 class="h4 mb-3 font-weight-normal">Please sign in</h4>
-            <input type="email" id="inputEmail" class="form-control my-1" placeholder="Email address" required="" autofocus="">
-            <input type="password" id="inputPassword" class="form-control my-1" placeholder="Password" required="">
+            <h4 class="h4 mb-3 font-weight-normal">Sign in</h4>
+            <input type="text" id="inputEmail" class="form-control my-2" placeholder="Username" required autofocus>
+            <input type="password" id="inputPassword" class="form-control my-2" placeholder="Password" required>
             <button class="btn btn-lg btn-success btn-block my-3" type="submit">Sign in</button>
         </form>
+        <button class="btn btn-lg btn-success btn-block my-3" type="button" onclick="submit()">Sign in</button>
     </div>
 </body>
 

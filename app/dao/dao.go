@@ -11,6 +11,13 @@ type DAO struct {
 	Name string
 }
 
+//GetAll is ...
+func (d *DAO) GetAll() []entity.Student {
+	var students []entity.Student
+	students = append(students, entity.Student{Name: "demo", Age: 10})
+	return students
+}
+
 //Get is ..
 func (d *DAO) Get(id int) entity.Student {
 	db, _ := sql.Open("sqlite3", d.Name)

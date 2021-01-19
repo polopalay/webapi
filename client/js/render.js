@@ -3,3 +3,9 @@ function login() {
         document.getElementById("root").innerHTML = rs
     })
 }
+
+submit = () => {
+    event.preventDefault()
+    console.log(event.target)
+    return false;
+}
