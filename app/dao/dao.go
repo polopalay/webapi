@@ -6,20 +6,27 @@ import (
 	"webapi/app/entity"
 )
 
-//DAO is ..
-type DAO struct {
+//StudentDAO is ..
+type StudentDAO struct {
 	Name string
 }
 
 //GetAll is ...
-func (d *DAO) GetAll() []entity.Student {
+func (d *StudentDAO) GetAll() []entity.Student {
 	var students []entity.Student
 	students = append(students, entity.Student{Name: "demo", Age: 10})
+	db, _ := sql.Open("sqlite3", d.Name)
+	rows, _ := db.Query("SELECT Name, Age FROM Student")
+	for rows.Next() {
+		student := entity.Student{Name: "", Age: 0}
+		rows.Scan(&student.Name, &student.Age)
+		students = append(students, student)
+	}
 	return students
 }
 
 //Get is ..
-func (d *DAO) Get(id int) entity.Student {
+func (d *StudentDAO) Get(id int) entity.Student {
 	db, _ := sql.Open("sqlite3", d.Name)
 	rows, _ := db.Query("SELECT Name, Age FROM Student WHERE id = ?", id)
 	student := entity.Student{Name: "", Age: 0}
@@ -33,7 +40,7 @@ func (d *DAO) Get(id int) entity.Student {
 }
 
 //Add is ..
-func (d *DAO) Add(student entity.Student) error {
+func (d *StudentDAO) Add(student entity.Student) error {
 	query := fmt.Sprintf("INSERT INTO Student (Name, Age) VALUES (?, ?)")
 	db, err := sql.Open("sqlite3", d.Name)
 	statement, err := db.Prepare(query)
@@ -44,7 +51,7 @@ func (d *DAO) Add(student entity.Student) error {
 }
 
 //Del is ..
-func (d *DAO) Del(id int) error {
+func (d *StudentDAO) Del(id int) error {
 	query := fmt.Sprintf("DELETE FROM Student WHERE id = ?")
 	db, err := sql.Open("sqlite3", d.Name)
 	statement, err := db.Prepare(query)

@@ -4,10 +4,16 @@
   box-sizing: border-box;
 }
 
+a {
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
 .main{
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   min-height: 100vh;
 }
-

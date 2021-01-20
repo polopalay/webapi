@@ -2,7 +2,6 @@ package handler
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"strconv"
 	"strings"
@@ -18,44 +17,59 @@ type StudentController struct {
 
 func (sc *StudentController) get(w http.ResponseWriter, r *http.Request) {
 	id, _ := strconv.Atoi(strings.Join(r.URL.Query()["id"], ""))
-	var d = dao.DAO{Name: sc.DbName}
-	student := d.Get(id)
+	if id == 0 {
+		sc.getMany(w, r)
+	} else {
+		sc.getone(w, r, id)
+	}
+}
+
+func (sc *StudentController) getMany(w http.ResponseWriter, r *http.Request) {
+	var d = dao.StudentDAO{Name: sc.DbName}
+	students := d.GetAll()
+	json, _ := json.Marshal(students)
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	w.Write([]byte(fmt.Sprintf("{name: %s,age:%d}", student.Name, student.Age)))
+	w.Write([]byte(json))
+}
+
+func (sc *StudentController) getone(w http.ResponseWriter, r *http.Request, id int) {
+	var d = dao.StudentDAO{Name: sc.DbName}
+	student := d.Get(id)
+	json, _ := json.Marshal(student)
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte(json))
+
 }
 
 func (sc *StudentController) post(w http.ResponseWriter, r *http.Request) {
 	student := entity.Student{}
 	json.NewDecoder(r.Body).Decode(&student)
-	var d = dao.DAO{Name: sc.DbName}
+	var d = dao.StudentDAO{Name: sc.DbName}
 	err := d.Add(student)
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
+	mss := "Success"
 	if err != nil {
-		w.Write([]byte(fmt.Sprintf("{mss: %s}", err.Error())))
-	} else {
-		w.Write([]byte(fmt.Sprintf("{mss: 'success'}")))
+		mss = err.Error()
 	}
+	w.Write([]byte((mss)))
 }
 
 func (sc *StudentController) del(w http.ResponseWriter, r *http.Request) {
 	id, _ := strconv.Atoi(strings.Join(r.URL.Query()["id"], ""))
-	var d = dao.DAO{Name: sc.DbName}
+	var d = dao.StudentDAO{Name: sc.DbName}
 	err := d.Del(id)
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
+	mss := "Success"
 	if err != nil {
-		w.Write([]byte(fmt.Sprintf("{mss: %s}", err.Error())))
-	} else {
-		w.Write([]byte(fmt.Sprintf("{mss: 'success'}")))
+		mss = err.Error()
 	}
+	w.Write([]byte((mss)))
 }
 
 func (sc *StudentController) notfound(w http.ResponseWriter) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusNotFound)
-	w.Write([]byte(`{"message": "not found"}`))
+	w.Write([]byte("not found"))
 }
 
 //Route is ..
