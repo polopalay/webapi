@@ -2,6 +2,7 @@ package app
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -10,7 +11,8 @@ import (
 
 //App is ...
 type App struct {
-	DbName string
+	DbName  string
+	Address string
 }
 
 //Init is ...
@@ -28,6 +30,8 @@ func (app *App) Start() {
 
 	http.Handle("/", fs)
 	http.HandleFunc("/api/data", sc.Route)
-	http.ListenAndServe(":8080", nil)
-	log.Println("Listening on :8080...")
+	http.ListenAndServe(app.Address, nil)
+	log.Printf("Listening on %s", app.Address)
+	log.Fatal(http.ListenAndServe(app.Address, nil))
+	fmt.Printf("Start")
 }

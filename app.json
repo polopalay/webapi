@@ -1,1 +1,4 @@
-{"dbname":"app.db"}
+{
+    "dbname": "app.db",
+    "address": ":8080"
+}
