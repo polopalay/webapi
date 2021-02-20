@@ -43,7 +43,7 @@ func (sc *StudentController) getone(w http.ResponseWriter, r *http.Request, id i
 
 }
 
-func (sc *StudentController) post(w http.ResponseWriter, r *http.Request) {
+func (sc *StudentController) Post(w http.ResponseWriter, r *http.Request) {
 	student := entity.Student{}
 	json.NewDecoder(r.Body).Decode(&student)
 	var d = dao.StudentDAO{Name: sc.DbName}
@@ -77,8 +77,8 @@ func (sc *StudentController) Route(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "GET":
 		sc.get(w, r)
-	case "POST":
-		sc.post(w, r)
+	case "Post":
+		sc.Post(w, r)
 	case "DELETE":
 		sc.del(w, r)
 	default:
